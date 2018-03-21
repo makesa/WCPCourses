@@ -1,0 +1,46 @@
+﻿@model WCPCourses.Models.DataModels.Course
+    @using WCPCourses.Models.DataModels
+@{
+    ViewBag.Title = "Course Detail";
+}
+<div class="home-link">
+    @Html.ActionLink("Home", "Index", null, new { @class = "btn btn-primary" })
+</div>
+
+<div class="admin-link">
+    @Html.ActionLink("Admin", "Admin", null, new { @class = "btn btn-primary" })
+</div>
+
+<h2>@Model.Title</h2>
+
+<div class="row">
+    <div class="description">
+
+        @Html.DisplayFor(m => m.Description)
+    </div>
+    <br />
+    <br />
+    <br />
+    <div class="radio">
+        <fieldset>
+            <legend>Choose Your Session Date</legend>
+            <label>
+                @Html.RadioButtonFor(m => m.Session,
+                               Course.SessionDate.April) @Course.SessionDate.April
+                        </label>
+                        <br />
+                        <label>
+                            @Html.RadioButtonFor(m => m.Session,
+                                           Course.SessionDate.May) @Course.SessionDate.May
+                                    </label>
+                                    <br />
+                                    <label>
+                                        @Html.RadioButtonFor(m => m.Session,
+                                                       Course.SessionDate.June) @Course.SessionDate.June
+                                                </label>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            @Html.ActionLink("Done", "Index", null, new { @class = "btn btn-primary" })
+                                        </div>
+                                    </div>
