@@ -8,7 +8,7 @@
 </div>
 
 <div class="admin-link">
-    @Html.ActionLink("Admin", "Admin", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Admin", "Index", "Student")
 </div>
 
 <h2>@Model.Title</h2>
@@ -40,7 +40,8 @@
                                                 </label>
                                             </fieldset>
                                         </div>
-                                        <div class="col-sm-12">
-                                            @Html.ActionLink("Done", "Index", null, new { @class = "btn btn-primary" })
-                                        </div>
+    <div class="home-link">
+        @Html.ActionLink("Register", "StudentAdd", "Student")
+    </div>
                                     </div>
+

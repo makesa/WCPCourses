@@ -1,0 +1,30 @@
+﻿@model WCPCourses.Models.StudentListView
+@{
+    ViewBag.Title = "Registered Students";
+}
+
+<h2>Registered Students</h2>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < Model.Students.Count; i++)
+    {
+        <tr>
+            <td>@Model.Students[i].FullName</td>
+            <td>@Html.ActionLink("Detail", "StudentDetail", new { id = Model.Students[i].StudentId })</td>
+        </tr>
+
+
+        
+        
+
+}
+    </tbody>
+</table>
