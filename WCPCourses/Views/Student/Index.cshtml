@@ -1,8 +1,11 @@
 ﻿@model WCPCourses.Models.StudentListView
+
 @{
     ViewBag.Title = "Registered Students";
 }
-
+<div class="home-link">
+    @Html.ActionLink("Home", "Index", null, new { @class = "btn btn-primary" })
+</div>
 <h2>Registered Students</h2>
 
 

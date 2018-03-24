@@ -12,6 +12,9 @@ namespace WCPCourses.Models
         [DisplayName("First Name")]
         public string FirstName { get; set; }
 
+        [DisplayName("Email Address")]
+        public string Email { get; set; }
+
         [DisplayName("Name")]
         public string FullName => FirstName + " " + LastName;
     }

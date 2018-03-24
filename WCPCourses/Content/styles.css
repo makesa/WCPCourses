@@ -84,6 +84,11 @@ p {
     padding-right:10%;
 }
 
+addstudent-text {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 130%;
+}
+
 form {
     margin:auto;
     background-color:bisque;

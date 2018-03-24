@@ -1,11 +1,14 @@
-﻿@model WCPCourses.Models.DataModels.Student
+﻿@model WCPCourses.Models.StudentView
 @{
     ViewBag.Title = "Student Details";
 }
+<div class="home-link">
+    @Html.ActionLink("Home", "Index")
+</div>
 
-<h2>StudentDetail</h2>
+<h2>Student's  Info</h2>
 
-<h2>@Model.FullName</h2>
+<h3>@Model.FullName</h3>
 
 <div class="row">
     <div class="col-sm-12 form-group">
@@ -20,8 +23,8 @@
         @Html.LabelFor(m => m.Email)
         <br />@Html.DisplayFor(m => m.Email)
     </div>
-    <div class="col-sm-12">
-        @Html.ActionLink("Done", "Index", null, new { @class = "btn btn-primary" })
+    <div class="home-link">
+        @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-primary" })
     </div>
 </div>
 

@@ -1,0 +1,30 @@
+﻿@model WCPCourses.Models.StudentView
+@{
+    ViewBag.Title = "Add Info - Register for Class";
+}
+
+<h2>@Model.FullName</h2>
+
+<div class="row">
+    <div class="addstudent-text">
+        @using (Html.BeginForm("RegisterStudent", "Student"))
+    {
+        <div class="addstudent-text">
+            @Html.LabelFor(m => m.FirstName)
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div>
+        <div class="addstudent-text">
+            @Html.LabelFor(m => m.LastName)
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+        <div class="addstudent-text">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+        @Html.ActionLink("Cancel", "Index", "Home")
+}
+    </div>
+</div>
+

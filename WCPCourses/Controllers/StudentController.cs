@@ -32,11 +32,13 @@ namespace WCPCourses.Controllers
         {
             var studentList = new StudentListView
             {
-                Students = Student.Select(p => new StudentView
+                Students = Student.Select(s => new StudentView
                 {
-                    StudentId = p.StudentId,
-                    LastName = p.LastName,
-                    FirstName = p.FirstName
+                    StudentId = s.StudentId,
+                    LastName = s.LastName,
+                    FirstName = s.FirstName,
+                    Email = s.Email
+                    
                 }).ToList()
             };
 
@@ -63,15 +65,15 @@ namespace WCPCourses.Controllers
             return new HttpNotFoundResult();
         }
 
-        public ActionResult StudentAdd()
+        public ActionResult StudentRegister()
         {
             var studentView = new StudentView();
 
-            return View("AddStudent", studentView);
+            return View("RegisterStudent", studentView);
         }
 
         [HttpPost]
-        public ActionResult AddStudent(StudentView studentView)
+        public ActionResult RegisterStudent(StudentView studentView)
         {
             var nextStudentId = Student.Max(s => s.StudentId) + 1;
                     
@@ -79,13 +81,15 @@ namespace WCPCourses.Controllers
             {
                 StudentId = nextStudentId,
                 LastName = studentView.LastName,
-                FirstName = studentView.FirstName
+                FirstName = studentView.FirstName,
+                Email = studentView.Email
             };
 
             Student.Add(student);
 
-            return RedirectToAction("Index");
+            return View("Success");
         }
+
 
     }
 }

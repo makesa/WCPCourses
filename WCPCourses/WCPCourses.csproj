@@ -122,8 +122,9 @@
     <Content Include="Views\Home\Course.cshtml" />
     <Content Include="Views\Student\StudentDetail.cshtml" />
     <Content Include="Views\Student\Index.cshtml" />
-    <Content Include="Views\Student\AddStudent.cshtml" />
+    <Content Include="Views\Student\RegisterStudent.cshtml" />
     <Content Include="Views\Student\AddEditDelete.cshtml" />
+    <Content Include="Views\Student\Success.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
