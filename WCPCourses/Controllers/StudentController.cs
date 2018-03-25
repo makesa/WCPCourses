@@ -65,6 +65,9 @@ namespace WCPCourses.Controllers
             return new HttpNotFoundResult();
         }
 
+
+        // This section is just for the students to register (Add) only
+
         public ActionResult StudentRegister()
         {
             var studentView = new StudentView();
@@ -89,6 +92,85 @@ namespace WCPCourses.Controllers
 
             return View("Success");
         }
+
+
+        // This is the Admin section where all CRUD permissions are granted
+        /// 
+        public ActionResult StudentAdd()
+        {
+            var studentView = new StudentView();
+
+            return View("AddEditDelete", studentView);
+        }
+
+        [HttpPost]
+        public ActionResult AddStudent(StudentView studentView)
+        {
+            var nextStudentId = Student.Max(p => p.StudentId) + 1;
+
+            var person = new Student
+            {
+                StudentId = nextStudentId,
+                LastName = studentView.LastName,
+                FirstName = studentView.FirstName
+            };
+
+            Student.Add(person);
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult StudentEdit(int id)
+        {
+            var student = Student.SingleOrDefault(p => p.StudentId == id);
+            if (student != null)
+            {
+                var studentView = new StudentView
+                {
+                    StudentId = student.StudentId,
+                    LastName = student.LastName,
+                    FirstName = student.FirstName,
+                    Email = student.Email
+                };
+
+                return View("AddEditDelete", studentView);
+            }
+
+            return new HttpNotFoundResult();
+        }
+
+        [HttpPost]
+        public ActionResult EditStudent(StudentView studentView)
+        {
+            var student = Student.SingleOrDefault(p => p.StudentId == studentView.StudentId);
+
+            if (student != null)
+            {
+                student.LastName = studentView.LastName;
+                student.FirstName = studentView.FirstName;
+                student.Email = studentView.Email;
+
+                return RedirectToAction("Index");
+            }
+
+            return new HttpNotFoundResult();
+        }
+
+        [HttpPost]
+        public ActionResult DeleteStudent(StudentView studentView)
+        {
+            var student = Student.SingleOrDefault(p => p.StudentId == studentView.StudentId);
+
+            if (student != null)
+            {
+                Student.Remove(student);
+
+                return RedirectToAction("Index");
+            }
+
+            return new HttpNotFoundResult();
+        }
+
 
 
     }
