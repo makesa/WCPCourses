@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace WCPCourses.Models
+namespace WCPCourses.Models.ViewModels
 {
     public class StudentView
     {

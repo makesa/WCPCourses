@@ -3,63 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using WCPCourses.Models.DataModels;
-
+using WCPCourses.Models.ViewModels;
+    
 
 namespace WCPCourses.Controllers
 {
     public class StudentController : Controller
     {
-        public static List<Student> Student = new List<Student>
-                {
-                    new Student { StudentId = 1, LastName = "Halpert", FirstName = "Jim" },
-                    new Student { StudentId = 2, LastName = "Beesly", FirstName = "Pam" },
-                    new Student { StudentId = 3, LastName = "Scott", FirstName = "Michael"},
-                    new Student { StudentId = 4, LastName = "Schrute", FirstName = "Dwight" },
-                    new Student { StudentId = 5, LastName = "Martin", FirstName = "Angela" },
-                    new Student { StudentId = 6, LastName = "Bernard", FirstName = "Andy" },
-                    new Student { StudentId = 7, LastName = "Malone", FirstName = "Kevin" },
-                    new Student { StudentId = 8, LastName = "Kapoor", FirstName = "Kelly" },
-                    new Student { StudentId = 9, LastName = "Palmer", FirstName = "Meredith" },
-                    new Student { StudentId = 10, LastName = "Flenderson", FirstName = "Toby" },
-                    new Student { StudentId = 11, LastName = "Hudson", FirstName = "Stanley" },
-                    new Student { StudentId = 12, LastName = "Bratton", FirstName = "Creed" },
-                    new Student { StudentId = 13, LastName = "Vance", FirstName = "Phyllis" },
-                    new Student { StudentId = 14, LastName = "Howard", FirstName = "Ryan" },
-                    new Student { StudentId = 15, LastName = "Philbin", FirstName = "Darryl" }
-                };
-
         public ActionResult Index()
         {
-            var studentList = new StudentListView
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                Students = Student.Select(s => new StudentView
+                var studentList = new StudentListView
                 {
-                    StudentId = s.StudentId,
-                    LastName = s.LastName,
-                    FirstName = s.FirstName,
-                    Email = s.Email
-                    
-                }).ToList()
-            };
+                    //Convert each Student to a StudentViewModel
+                    Students = wCPCoursesContext.Students.Select(s => new StudentView
+                    {
+                        StudentId = s.StudentId,
+                        LastName = s.LastName,
+                        FirstName = s.FirstName,
+                        Email = s.Email
+                    }).ToList()
+                };
 
-            studentList.TotalStudents = studentList.Students.Count;
+                studentList.TotalStudents = studentList.Students.Count;
 
-            return View(studentList);
+                return View(studentList);
+            }
         }
 
         public ActionResult StudentDetail(int id)
         {
-            var student = Student.SingleOrDefault(s => s.StudentId == id);
-            if (student != null)
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                var studentView = new StudentView
+                var student = wCPCoursesContext.Students.SingleOrDefault(s => s.StudentId == id);
+                if (student != null)
                 {
-                    StudentId = student.StudentId,
-                    LastName = student.LastName,
-                    FirstName = student.FirstName
+                    var studentView = new StudentView
+                    {
+                        StudentId = student.StudentId,
+                        LastName = student.LastName,
+                        FirstName = student.FirstName,
+                        Email = student.Email
                 };
 
-                return View(studentView);
+                    return View(studentView);
+                }
             }
 
             return new HttpNotFoundResult();
@@ -78,17 +67,18 @@ namespace WCPCourses.Controllers
         [HttpPost]
         public ActionResult RegisterStudent(StudentView studentView)
         {
-            var nextStudentId = Student.Max(s => s.StudentId) + 1;
-                    
-            var student = new Student
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                StudentId = nextStudentId,
-                LastName = studentView.LastName,
-                FirstName = studentView.FirstName,
-                Email = studentView.Email
+                var student = new Student
+                {
+                    LastName = studentView.LastName,
+                    FirstName = studentView.FirstName,
+                    Email = studentView.Email
             };
 
-            Student.Add(student);
+                wCPCoursesContext.Students.Add(student);
+                wCPCoursesContext.SaveChanges();
+            }
 
             return View("Success");
         }
@@ -106,34 +96,39 @@ namespace WCPCourses.Controllers
         [HttpPost]
         public ActionResult AddStudent(StudentView studentView)
         {
-            var nextStudentId = Student.Max(p => p.StudentId) + 1;
-
-            var person = new Student
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                StudentId = nextStudentId,
-                LastName = studentView.LastName,
-                FirstName = studentView.FirstName
+                var student = new Student
+                {
+                    LastName = studentView.LastName,
+                    FirstName = studentView.FirstName,
+                    Email = studentView.Email
             };
 
-            Student.Add(person);
+                wCPCoursesContext.Students.Add(student);
+                wCPCoursesContext.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
 
         public ActionResult StudentEdit(int id)
         {
-            var student = Student.SingleOrDefault(p => p.StudentId == id);
-            if (student != null)
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                var studentView = new StudentView
+                var student = wCPCoursesContext.Students.SingleOrDefault(s => s.StudentId == id);
+                if (student != null)
                 {
-                    StudentId = student.StudentId,
-                    LastName = student.LastName,
-                    FirstName = student.FirstName,
-                    Email = student.Email
-                };
+                    var studentView = new StudentView
+                    {
+                        StudentId = student.StudentId,
+                        LastName = student.LastName,
+                        FirstName = student.FirstName,
+                        Email = student.Email
+                    };
 
-                return View("AddEditDelete", studentView);
+                    return View("AddEditDelete", studentView);
+                }
             }
 
             return new HttpNotFoundResult();
@@ -142,15 +137,19 @@ namespace WCPCourses.Controllers
         [HttpPost]
         public ActionResult EditStudent(StudentView studentView)
         {
-            var student = Student.SingleOrDefault(p => p.StudentId == studentView.StudentId);
-
-            if (student != null)
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                student.LastName = studentView.LastName;
-                student.FirstName = studentView.FirstName;
-                student.Email = studentView.Email;
+                var student = wCPCoursesContext.Students.SingleOrDefault(p => p.StudentId == studentView.StudentId);
 
-                return RedirectToAction("Index");
+                if (student != null)
+                {
+                    student.LastName = studentView.LastName;
+                    student.FirstName = studentView.FirstName;
+                    student.Email = studentView.Email;
+                    wCPCoursesContext.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
 
             return new HttpNotFoundResult();
@@ -159,13 +158,17 @@ namespace WCPCourses.Controllers
         [HttpPost]
         public ActionResult DeleteStudent(StudentView studentView)
         {
-            var student = Student.SingleOrDefault(p => p.StudentId == studentView.StudentId);
-
-            if (student != null)
+            using (var wCPCoursesContext = new WCPCoursesContext())
             {
-                Student.Remove(student);
+                var student = wCPCoursesContext.Students.SingleOrDefault(s => s.StudentId == studentView.StudentId);
 
-                return RedirectToAction("Index");
+                if (student != null)
+                {
+                    wCPCoursesContext.Students.Remove(student);
+                    wCPCoursesContext.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
             }
 
             return new HttpNotFoundResult();

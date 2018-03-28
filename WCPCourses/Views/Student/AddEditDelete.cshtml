@@ -1,8 +1,7 @@
-﻿@model WCPCourses.Models.StudentView
+﻿@model WCPCourses.Models.ViewModels.StudentView
 @{
     var isEditMode = Model.StudentId != null;
     ViewBag.Title = isEditMode ? "Edit " + Model.FullName : "Add Student";
-
 }
 
 <h2>@Model.FullName</h2>
@@ -25,7 +24,7 @@
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
         <button type="submit" class="btn btn-primary">@(isEditMode ? "Save" : "Add")</button>
-        @Html.ActionLink("Cancel", "Index")
+        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
 }
     </div>
 </div>

@@ -11,8 +11,11 @@
 </head>
 <body>
     <div class="WCPClogo wrapper">
-        <img class="logo" src="/wcpLogo.png" width="20%">
-        <div>
+        <a href="@Url.Action("Index","Home")">
+            <img class="home-images" src="@Url.Content("~/wcpLogo.png")" width="20%"/>
+        </a>
+        </div>
+        <div class="renderbody">
             @RenderBody()
         </div>
         <br />

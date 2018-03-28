@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WCPCourses.Models.DataModels;
 
-namespace WCPCourses.Models
+namespace WCPCourses.Models.ViewModels
 {
     public class StudentListView
     {
